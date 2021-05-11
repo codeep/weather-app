@@ -1,80 +1,75 @@
 import React, { Component } from 'react';
-import './style.css';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import axios from 'axios';
+import View from '../View';
+import { getOpenweatherUrl } from '../../utils';
 
 class CountrySelect extends Component {
   constructor (props) {
     super(props);
     this.state = { 
-      place: {
-        country: 'Armenia', 
-        region: 'Yerevan',
-      },
-      teperature: '',
-      desc: '',
+      country: 'Armenia',
+      region: 'Yerevan',
+      teperature: 0,
+      description: '',
     };
+
+    this.getWeather = this.getWeather.bind(this);
+    this.selectCountry = this.selectCountry.bind(this);
+    this.selectRegion = this.selectRegion.bind(this);
   }
 
-  selectCountry (val) {
-    this.setState({ country: val });
+  selectCountry (country) {
+    this.setState({ country });
   }
 
-  selectRegion (val) {
-    this.setState({ region: val });
+  selectRegion (region) {
+    this.setState({ region });
   }
 
-  componentDidMount(){
-    this.getWeather(this.state.region)
-  }
+  // componentDidMount(){
+  //   this.getWeather(this.state.region)
+  // }
 
-  getWeather(region){
-    // console.log(region);
-    // console.log(window)
-
-    axios({
-      method: "GET",
-      url: `https://api.openweathermap.org/data/2.5/weather?q=${region}&appid=2aeac406d27d1caf020cdd5e447d1bab`,
-    })
+  getWeather(){
+    const url = getOpenweatherUrl(this.state.region)
+    axios({ method: "GET", url })
       .then((response) => {
-        // console.log(response.data.main.temp);
-
-        // Kelvin to Celsius
-        this.setState({ teperature: response.data.main.temp - 273.15 })
-        // console.log(response.data);
-
-        this.setState({desc: response.data.weather[0].main})
+        const  { data: { main: { temp }, weather: [{ main }] } } = response;
+        this.setState({ 
+          description: main,
+          teperature: temp,
+        })
       })
       .catch((error) => {
         console.log(error);
       });
   }
+
   render () {
-    const { country, region , teperature, desc} = this.state;
+    const { country, region} = this.state;
+
     return (
       <>      
         <div>
           <CountryDropdown
             value={country}
-            onChange={(val) => this.selectCountry(val)} 
+            onChange={this.selectCountry} 
           />
           <RegionDropdown
             country={country}
             value={region}
-            onChange={(val) => this.selectRegion(val)} 
+            onChange={this.selectRegion} 
           />
         </div>
-        <button onClick={() => this.getWeather(region)}>
-          GET
-        </button>
-      
-        <div className='view'>
-            {new Date().toLocaleString()}
-            <br />
-            {region}, {country} Weather
-            <br />
-            {Math.round(teperature * 100) / 100} ℃ - {desc}
-        </div>
+        <button onClick={this.getWeather}> GET </button>
+  
+        <View 
+          region={this.state.region}
+          country={this.state.country}
+          teperature={this.state.teperature}
+          description={this.state.description}
+        />
       </>
     );
   }
