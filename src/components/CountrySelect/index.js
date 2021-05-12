@@ -3,6 +3,7 @@ import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import axios from 'axios';
 import View from '../View';
 import { getOpenweatherUrl } from '../../utils';
+import './style.css';
 
 class CountrySelect extends Component {
   constructor (props) {
@@ -12,6 +13,10 @@ class CountrySelect extends Component {
       region: 'Yerevan',
       teperature: 0,
       description: '',
+      feels_like: 0,
+      temp_min: 0,
+      temp_max: 0,
+      humidity: 0
     };
 
     this.getWeather = this.getWeather.bind(this);
@@ -27,18 +32,23 @@ class CountrySelect extends Component {
     this.setState({ region });
   }
 
-  // componentDidMount(){
-  //   this.getWeather(this.state.region)
-  // }
+  componentDidMount(){
+    this.getWeather(this.state.region)
+  }
 
   getWeather(){
-    const url = getOpenweatherUrl(this.state.region)
+    const url = getOpenweatherUrl(this.state.region);
+    console.log(url)
     axios({ method: "GET", url })
       .then((response) => {
-        const  { data: { main: { temp }, weather: [{ main }] } } = response;
+        const  { data: { main: { temp, feels_like, temp_min, temp_max, humidity}, weather: [{ description }]}} = response;
         this.setState({ 
-          description: main,
+          description: description,
           teperature: temp,
+          feels_like: feels_like,
+          temp_min: temp_min,
+          temp_max: temp_max,
+          humidity: humidity
         })
       })
       .catch((error) => {
@@ -47,10 +57,10 @@ class CountrySelect extends Component {
   }
 
   render () {
-    const { country, region} = this.state;
+    const { country, region } = this.state;
 
     return (
-      <>      
+      <div className='countrySelect'>      
         <div>
           <CountryDropdown
             value={country}
@@ -62,6 +72,7 @@ class CountrySelect extends Component {
             onChange={this.selectRegion} 
           />
         </div>
+
         <button onClick={this.getWeather}> GET </button>
   
         <View 
@@ -69,8 +80,12 @@ class CountrySelect extends Component {
           country={this.state.country}
           teperature={this.state.teperature}
           description={this.state.description}
+          feels_like={this.state.feels_like}
+          temp_min={this.state.temp_min}
+          temp_max={this.state.temp_max}
+          humidity={this.state.humidity}
         />
-      </>
+      </div>
     );
   }
 }
