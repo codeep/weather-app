@@ -1,0 +1,8 @@
+.home {
+    background-color: #c72ddb42;
+    display: grid;
+    gap: 10px 10px;
+    justify-items: center;
+    align-items: center;
+    grid-template-rows: auto auto; 
+}
