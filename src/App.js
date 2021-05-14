@@ -1,12 +1,10 @@
 import './App.css';
-import CountrySelect from './components/CountrySelect';
+import Home from './pages/Home';
 
 function App(){
   return (
     <div className="App">
-      <header className="App-header">
-        <CountrySelect/>
-      </header>
+      <Home/>
     </div>
   );
 }

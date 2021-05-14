@@ -1,78 +1,62 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import axios from 'axios';
-import View from '../View';
-import { getOpenweatherUrl } from '../../utils';
+
+import { IPINFO_API } from '../../utils';
+import './style.css';
 
 class CountrySelect extends Component {
-  constructor (props) {
+  constructor(props){
     super(props);
-    this.state = { 
-      country: 'Armenia',
-      region: 'Yerevan',
-      teperature: 0,
-      description: '',
-    };
-
-    this.getWeather = this.getWeather.bind(this);
-    this.selectCountry = this.selectCountry.bind(this);
-    this.selectRegion = this.selectRegion.bind(this);
+    this.state = {
+      country: '',
+      region: '',
+    }
   }
 
-  selectCountry (country) {
-    this.setState({ country });
+  componentDidMount(){    
+    axios({ method: "GET", url: IPINFO_API })
+      .then(response => {
+        const countryFullNames = new Intl.DisplayNames(['us'], { type: 'region' });
+        const country = countryFullNames.of(`${response.data.country}`);
+        const region = response.data.region;
+        this.setState({ country, region });
+        this.props.getWeather({ country, region });
+      }).catch(e => console.log(e));
   }
 
-  selectRegion (region) {
-    this.setState({ region });
-  }
-
-  // componentDidMount(){
-  //   this.getWeather(this.state.region)
-  // }
-
-  getWeather(){
-    const url = getOpenweatherUrl(this.state.region)
-    axios({ method: "GET", url })
-      .then((response) => {
-        const  { data: { main: { temp }, weather: [{ main }] } } = response;
-        this.setState({ 
-          description: main,
-          teperature: temp,
-        })
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  handleFormChange = (key) => {
+    return (value) => {
+      this.setState({ [key] : value })
+    }
   }
 
   render () {
-    const { country, region} = this.state;
+    const { country, region } = this.state;
 
     return (
-      <>      
+      <div className='countrySelect'>      
         <div>
           <CountryDropdown
             value={country}
-            onChange={this.selectCountry} 
+            onChange={this.handleFormChange('country')} 
           />
           <RegionDropdown
             country={country}
             value={region}
-            onChange={this.selectRegion} 
+            onChange={this.handleFormChange('region')} 
           />
         </div>
-        <button onClick={this.getWeather}> GET </button>
-  
-        <View 
-          region={this.state.region}
-          country={this.state.country}
-          teperature={this.state.teperature}
-          description={this.state.description}
-        />
-      </>
+
+        <button onClick={() => this.props.getWeather({ region })}> GET </button>
+      </div>
     );
   }
 }
+
+CountrySelect.propTypes = {
+  getWeather: PropTypes.func.isRequired,
+};
 
 export default CountrySelect
