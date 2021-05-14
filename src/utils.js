@@ -12,11 +12,10 @@ export const setOpenWeatherIcon = (icon) => (
 )
 
 export const setTepmerature = (teperature, value) => {
-  let temp = teperature;
   if (value === 'celsius'){
-    temp =  teperature - 273.15
-  }else if(value === 'fahrenheit'){
-    temp = (teperature - 273.15) * 1.8 + 32
+    return Math.round((teperature - 273.15) * 100)/ 100
+  }else if (value === 'fahrenheit'){
+    return Math.round(((teperature - 273.15)* 1.8 + 32) * 100)/ 10
   }
-  return Math.round(temp * 100) / 100;
+  return Math.round(teperature)
 }
