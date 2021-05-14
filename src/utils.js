@@ -7,9 +7,9 @@ export const getOpenweatherUrl = (region) => (
   `${OpenWeatherURL}?q=${region}&appid=${API_KEY}`
 )
 
-export const setOpenWeatherIcon = (icon) => {
-  return <img src={OpenWeatherIconURL+icon+'@2x.png'} alt='weather_icon'/>
-}
+export const setOpenWeatherIcon = (icon) => (
+  `${OpenWeatherIconURL}${icon}@2x.png`
+)
 
 export const setTepmerature = (teperature, value) => {
   let temp = teperature;

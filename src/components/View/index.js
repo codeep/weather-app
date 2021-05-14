@@ -14,7 +14,7 @@ function View ({ value, teperature, description, feels_like, temp_min, temp_max,
             {description}
           </div>
           <div>
-            {setOpenWeatherIcon(icon)}
+            <img src={setOpenWeatherIcon(icon)} alt='weather_icon'/>
             <div>
               {new Date().toDateString()}
               <br/>
