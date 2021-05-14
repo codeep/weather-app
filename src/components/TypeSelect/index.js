@@ -18,6 +18,7 @@ function TypeSelect({getTepmeratureType, value}){
 
 TypeSelect.propTypes = {
   getTepmeratureType: PropTypes.func.isRequired,
+  value: PropTypes.string
 };
 
 export default TypeSelect
