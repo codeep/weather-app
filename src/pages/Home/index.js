@@ -23,7 +23,7 @@ class Home extends Component{
       icon: '',
       value: ''      
     };
-  }
+  };
   
   getWeather = ({ region }) => {
     const url = getOpenweatherUrl(region);
@@ -48,24 +48,26 @@ class Home extends Component{
 
   getTepmeratureType = (event) => {
     this.setState({
-      value: event.target.value
-    })
+      value: event.target.value,
+    });
   };
   
   render(){
+    const { value, teperature, description, feels_like, temp_min, temp_max, humidity, icon } = this.state;
+
     return (
       <div className='home'>
         <CountrySelect getWeather={this.getWeather} />
-        <TypeSelect getTepmeratureType={this.getTepmeratureType}/>
+        <TypeSelect getTepmeratureType={this.getTepmeratureType} value={value}/>
         <View
-          value={this.state.value}
-          teperature={this.state.teperature}
-          description={this.state.description}
-          feels_like={this.state.feels_like}
-          temp_min={this.state.temp_min}
-          temp_max={this.state.temp_max}
-          humidity={this.state.humidity}
-          icon={this.state.icon}
+          value={value}
+          teperature={teperature}
+          description={description}
+          feels_like={feels_like}
+          temp_min={temp_min}
+          temp_max={temp_max}
+          humidity={humidity}
+          icon={icon}
         />
       </div>
     );
