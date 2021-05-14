@@ -18,12 +18,12 @@ function View ({ value, teperature, description, feels_like, temp_min, temp_max,
             <div>
               {new Date().toDateString()}
               <br/>
-              {temp_min} / {temp_max}
+              {setTepmerature(temp_min,value)} / {setTepmerature(temp_max,value)}
             </div>
           </div>
         </div>
         <div>
-          Feels Like- {feels_like}
+          Feels Like- {setTepmerature(feels_like,value)}
           <br/>
           Humidity - {humidity}
         </div>
