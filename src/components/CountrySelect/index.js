@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import axios from 'axios';
-
+import playces from './places.json';
 import { IPINFO_API } from '../../utils';
 import './style.css';
 
 class CountrySelect extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       country: '',
@@ -15,7 +14,7 @@ class CountrySelect extends Component {
     }
   }
 
-  componentDidMount(){    
+  componentDidMount() {
     axios({ method: "GET", url: IPINFO_API })
       .then(response => {
         const countryFullNames = new Intl.DisplayNames(['us'], { type: 'region' });
@@ -26,29 +25,57 @@ class CountrySelect extends Component {
       }).catch(e => console.log(e));
   }
 
-  handleFormChange = (key) => {
-    return (value) => {
-      this.setState({ [key] : value })
+  componentDidUpdate(prevProps, prevState){
+    if(this.state.country !== prevState.country){
+      this.setState({ region: '' });
     }
   }
 
-  render () {
-    const { country, region } = this.state;
+  handleFormChange = (key) => {
+    return ({ target: { value } }) => {
+      this.setState({ [key]: value })
+    }
+  }
 
+  render() {
+    const { country, region } = this.state;
     return (
-      <div className='countrySelect'>      
-        <div>
-          <CountryDropdown
+      <div className='countrySelect'>
+        <label>Select Country
+          <input
+            list="Country"
             value={country}
             onChange={this.handleFormChange('country')} 
           />
-          <RegionDropdown
-            country={country}
-            value={region}
-            onChange={this.handleFormChange('region')} 
-          />
-        </div>
+        </label>
+        <datalist id="Country" onSelect={(e) => console.log(e)} >
+          {
+            Object.keys(playces).map((item, key) =>
+              <option value={item} key={key} />
+            )
+          }
+        </datalist>
 
+        {
+          playces[country] && (
+            <>
+              <label>Select Region
+                <input
+                  list="Region"
+                  value={region}
+                  onChange={this.handleFormChange('region')}
+                />
+              </label>
+              <datalist id="Region" >
+                {
+                  playces[country].map((item, key) =>
+                    <option value={item} key={key} />
+                  )
+                }
+              </datalist>
+            </>
+          )
+        }
         <button onClick={() => this.props.getWeather({ region })}> GET </button>
       </div>
     );
