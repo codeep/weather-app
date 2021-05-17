@@ -6,8 +6,8 @@ import {
 } from '../../utils';
 import {
   CountrySelect,
-  View,
-  TypeSelect
+  TypeSelect,
+  View
 } from '../../components';
 
 class Home extends Component{
@@ -27,8 +27,8 @@ class Home extends Component{
   
   getWeather = ({ region }) => {
     const url = getOpenweatherUrl(region);
-
-    axios({ method: "GET", url })
+    if(region){
+      axios({ method: "GET", url })
       .then((response) => {
         const  { data: { main: { temp, feels_like, temp_min, temp_max, humidity }, weather: [{ description, icon }]}} = response;
         this.setState({ 
@@ -44,6 +44,7 @@ class Home extends Component{
       .catch((error) => {
         console.log(error);
       });
+    }
   };
 
   getTepmeratureType = (event) => {
