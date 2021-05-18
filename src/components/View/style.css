@@ -7,3 +7,6 @@
     grid-template-columns: auto auto; 
     min-height: 157px;
 }
+.view_board{
+    background-color: #79531a7a;
+}

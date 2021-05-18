@@ -6,3 +6,8 @@
     align-items: center;
     grid-template-rows: auto auto; 
 }
+.view_screen{
+    background-color: #d476e042;
+    display: grid;
+    gap: 30px;
+}
