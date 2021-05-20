@@ -48,14 +48,13 @@ class CountrySelect extends Component {
             onChange={this.handleFormChange('country')} 
           />
         </label>
-        <datalist id="Country" onSelect={(e) => console.log(e)} >
+        <datalist id="Country" >
           {
             Object.keys(playces).map((item, key) =>
               <option value={item} key={key} />
             )
           }
         </datalist>
-
         {
           playces[country] && (
             <>
