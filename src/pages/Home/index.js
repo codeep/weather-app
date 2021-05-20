@@ -16,17 +16,23 @@ class Home extends Component {
 
   getWeather = async ({ region }) => {
     const { viewList } = this.state;
-    const data = await actions.fetchWeather(region);
-    const fetchedRegions = viewList.map(item => item.region);
-
-    if (!fetchedRegions.includes(region)) {
-      this.setState(prevState => ({
-        viewList: [...prevState.viewList, data],
-      }));
-    } else {
-      this.setState(({ viewList }) => ({
-        viewList: viewList.map(item => item.region === region ? data : item),
-      }));
+    try{
+      const data = await actions.fetchWeather(region);
+      
+      const fetchedRegions = viewList.map(item => item.region);
+      
+      if (!fetchedRegions.includes(region)) {
+        this.setState(prevState => ({
+          viewList: [...prevState.viewList, data],
+        }));
+      } else {
+        this.setState(({ viewList }) => ({
+          viewList: viewList.map(item => item.region === region ? data : item),
+        }));
+      }
+    }catch(e){
+      console.log(e);
+      alert('Please select a region');
     }
   };
 
