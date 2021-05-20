@@ -1,12 +1,17 @@
 .view {
-    background-color: #6e1a797a;
-    display: grid;
-    gap: 50px 10px;
-    justify-items: center;
-    align-items: center;
-    grid-template-columns: auto auto; 
-    min-height: 157px;
+  display: grid;
+  gap: 50px 10px;
+  min-height: 157px;
+  align-items: center;
+  justify-items: center;
+  background-color: #6e1a797a;
+  grid-template-columns: auto auto;
 }
-.view_board{
-    background-color: #79531a7a;
+.view_board {
+  display: grid;
+  gap: 20px 10px;
+  align-items: center;
+  justify-items: center;
+  background-color: #79531a7a;
+  grid-template-rows: auto auto; 
 }
