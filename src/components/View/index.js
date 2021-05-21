@@ -10,21 +10,48 @@ class View extends Component {
     this.state = {
       value: '',
     };
+
+    this.handleDrop = this.handleDrop.bind(this);
+    this.handleDragOver = this.handleDragOver.bind(this);
+    this.getTemperatureType = this.getTemperatureType.bind(this);
   };
 
-  getTemperatureType = (event) => {
-    this.setState({
-      value: event.target.value,
-    });
+  getTemperatureType({ target: { value } }) {
+    this.setState({ value });
   };
+
+  handleDragOver(event) {
+    event.preventDefault();
+  }
+
+  handleDrop(event) {
+    event.dataTransfer.setData("region", this.props.data.region);
+  }
 
   render() {
-    const { data: { region, temp, description, feels_like, temp_min, temp_max, humidity, icon } } = this.props;
     const { value } = this.state;
+    const {
+      data: {
+        temp,
+        icon,
+        region,
+        temp_min,
+        temp_max,
+        humidity,
+        feels_like,
+        description,
+      },
+    } = this.props;
 
     return (
-      <div className='view_board'>
-        <button onClick={this.props.removeView}> Close </button>
+      <div
+        draggable
+        className='view_board'
+        data-region={region}
+        onDrop={this.handleDrop}
+        onDragOver={this.handleDragOver}
+      >
+        <button onClick={() => this.props.removeView(region)}> Close </button>
         <TypeSelect getTemperatureType={this.getTemperatureType} value={value} />
         <div className='view'>
           <div>
