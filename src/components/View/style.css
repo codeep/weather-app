@@ -13,5 +13,6 @@
   align-items: center;
   justify-items: center;
   background-color: #79531a7a;
-  grid-template-rows: auto auto; 
+  grid-template-rows: auto auto;
+  cursor: move
 }
