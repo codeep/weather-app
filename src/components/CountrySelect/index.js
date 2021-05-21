@@ -12,6 +12,9 @@ class CountrySelect extends Component {
       country: '',
       region: '',
     }
+
+    this.handleFormChange = this.handleFormChange.bind(this);
+    this.handleGetWeather = this.handleGetWeather.bind(this);
   }
 
   componentDidMount() {
@@ -25,16 +28,22 @@ class CountrySelect extends Component {
       }).catch(e => console.log(e));
   }
 
-  componentDidUpdate(prevProps, prevState){
-    if(this.state.country !== prevState.country){
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.country !== prevState.country) {
       this.setState({ region: '' });
     }
   }
 
-  handleFormChange = (key) => {
+  handleFormChange(key) {
     return ({ target: { value } }) => {
       this.setState({ [key]: value })
     }
+  }
+
+  async handleGetWeather() {
+    const { region } = this.state;
+    await this.props.getWeather({ region });
+    this.setState({ region: '' });
   }
 
   render() {
@@ -45,7 +54,7 @@ class CountrySelect extends Component {
           <input
             list="Country"
             value={country}
-            onChange={this.handleFormChange('country')} 
+            onChange={this.handleFormChange('country')}
           />
         </label>
         <datalist id="Country" >
@@ -75,7 +84,7 @@ class CountrySelect extends Component {
             </>
           )
         }
-        <button onClick={() => this.props.getWeather({ region })}> GET </button>
+        <button onClick={this.handleGetWeather}> GET </button>
       </div>
     );
   }
