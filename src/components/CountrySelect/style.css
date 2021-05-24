@@ -1,7 +1,7 @@
 .countrySelect{
-    gap: 10px 0;
     display: grid ;
-    align-items: center;
+    gap: 10px 0;
     justify-items: center;
+    align-items: center;
     grid-template-rows: 50px auto auto;     
 }

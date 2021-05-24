@@ -1,14 +1,8 @@
 .home {
+    background-color: #c72ddb42;
     display: grid;
     gap: 10px 10px;
-    align-items: center;
     justify-items: center;
-    background-color: #c72ddb42;
-    grid-template-rows: auto auto;
-}
-.view_screen{
-    gap: 20px;
-    display: grid;
-    background-color: #d476e042;
-    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    grid-template-rows: auto auto; 
 }

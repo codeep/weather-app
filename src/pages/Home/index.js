@@ -1,100 +1,74 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-
-import actions from '../../actions';
+import React, { Component } from 'react'
+import axios from 'axios';
 import './style.css';
-import { CountrySelect, View } from '../../components';
+import { 
+  getOpenweatherUrl,
+} from '../../utils';
+import {
+  CountrySelect,
+  View,
+  TypeSelect
+} from '../../components';
 
-class Home extends Component {
-  constructor(props) {
+class Home extends Component{
+  constructor (props) {
     super(props);
-    this.state = {
-      viewList: [],
-      enteredView: '',
-      dragedRegion: '',
+    this.state = { 
+      teperature: 0,
+      description: '',
+      feels_like: 0,
+      temp_min: 0,
+      temp_max: 0,
+      humidity: 0,
+      icon: '',
+      value: ''      
     };
-    this.removeView = this.removeView.bind(this);
-    this.handleDrop = this.handleDrop.bind(this);
-    this.getDataRegion = this.getDataRegion.bind(this);
-    this.handleDragStart = this.handleDragStart.bind(this);
+  };
+  
+  getWeather = ({ region }) => {
+    const url = getOpenweatherUrl(region);
+
+    axios({ method: "GET", url })
+      .then((response) => {
+        const  { data: { main: { temp, feels_like, temp_min, temp_max, humidity }, weather: [{ description, icon }]}} = response;
+        this.setState({ 
+          teperature: temp,
+          description,
+          feels_like,
+          temp_min,
+          temp_max,
+          humidity,
+          icon
+        })
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
-  componentDidMount() {
-    document.addEventListener('dragstart', this.handleDragStart);
-    document.addEventListener('drop', this.handleDrop);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('dragstart', this.handleDragStart);
-    document.removeEventListener('drop', this.handleDrop);
-  }
-
-  getWeather = async ({ region }) => {
-    const { viewList } = this.state;
-    try {
-      const data = await actions.fetchWeather(region);
-      const fetchedRegions = viewList.map(item => item.region);
-
-      if (!fetchedRegions.includes(region)) {
-        this.setState(prevState => ({
-          viewList: [...prevState.viewList, data],
-        }));
-      } else {
-        this.setState(({ viewList }) => ({
-          viewList: viewList.map(item => item.region === region ? data : item),
-        }));
-      }
-    } catch (e) {
-      alert('Please select a region');
-    }
+  getTepmeratureType = (event) => {
+    this.setState({
+      value: event.target.value,
+    });
   };
-
-  removeView(region){
-    const { viewList } = this.state;
-    const nextViewList = viewList.filter(item => item.region !== region);
-    this.setState({ viewList: nextViewList });
-  };
-
-  handleDragStart(e){
-    const region = e.target.getAttribute('data-region');
-    this.setState({ dragedRegion: region });
-  }
-
-  getDataRegion(target){
-    let region = target.getAttribute('data-region');
-    return region || this.getDataRegion(ReactDOM.findDOMNode(target).parentElement);
-  }
-
-  handleDrop({ target }){
-    const dropedRegion = this.getDataRegion(target);
-    const { viewList, dragedRegion } = this.state;
-
-    const dropedRegionIndex = viewList.findIndex(({ region }) => region === dropedRegion);
-    const dragedRegionIndex = viewList.findIndex(({ region }) => region === dragedRegion);
-
-    const nextViewList = [...viewList];
-    nextViewList[dropedRegionIndex] = viewList[dragedRegionIndex];
-    nextViewList[dragedRegionIndex] = viewList[dropedRegionIndex];
-    this.setState({ viewList: nextViewList });
-  }
-
-  render() {
-    const { viewList } = this.state;
+  
+  render(){
+    const { value, teperature, description, feels_like, temp_min, temp_max, humidity, icon } = this.state;
 
     return (
       <div className='home'>
         <CountrySelect getWeather={this.getWeather} />
-        <div className='view_screen'>
-          {
-            viewList.map(data => (
-              <View
-                key={data.region}
-                data={data}
-                removeView={this.removeView}
-              />
-            ))
-          }
-        </div>
+        <TypeSelect getTepmeratureType={this.getTepmeratureType} value={value}/>
+        <View
+          value={value}
+          teperature={teperature}
+          description={description}
+          feels_like={feels_like}
+          temp_min={temp_min}
+          temp_max={temp_max}
+          humidity={humidity}
+          icon={icon}
+        />
       </div>
     );
   }
