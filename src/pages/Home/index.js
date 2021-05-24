@@ -61,7 +61,7 @@ class Home extends Component {
   }
 
   getDataRegion(target){
-    let region = target.getAttribute('data-region');
+    const region = target.getAttribute('data-region');
     return region || this.getDataRegion(ReactDOM.findDOMNode(target).parentElement);
   }
 
