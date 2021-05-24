@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import playces from './places.json';
+import places from './places.json';
 import { IPINFO_API } from '../../utils';
 import './style.css';
 
@@ -59,13 +59,13 @@ class CountrySelect extends Component {
         </label>
         <datalist id="Country" >
           {
-            Object.keys(playces).map((item, key) =>
-              <option value={item} key={key} />
+            Object.keys(places).map((item) =>
+              <option value={item} key={item} />
             )
           }
         </datalist>
         {
-          playces[country] && (
+          places[country] && (
             <>
               <label>Select Region
                 <input
@@ -76,8 +76,8 @@ class CountrySelect extends Component {
               </label>
               <datalist id="Region" >
                 {
-                  playces[country].map((item, key) =>
-                    <option value={item} key={key} />
+                  places[country].map((item) =>
+                    <option value={item} key={item} />
                   )
                 }
               </datalist>
