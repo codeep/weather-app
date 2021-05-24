@@ -5,11 +5,11 @@ const OpenWeatherURL = 'https://api.openweathermap.org/data/2.5/weather';
 
 export const getOpenweatherUrl = (region) => (
   `${OpenWeatherURL}?q=${region}&appid=${API_KEY}`
-)
+);
 
 export const setOpenWeatherIcon = (icon) => (
   `${OpenWeatherIconURL}${icon}@2x.png`
-)
+);
 
 export const getFormatedTemperature = (temp, value) => {
   if (value === 'celsius'){
@@ -18,4 +18,4 @@ export const getFormatedTemperature = (temp, value) => {
     return Math.round(temp - 273.15)* 1.8 + 32
   }
   return Math.round(temp)
-}
+};
