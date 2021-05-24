@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function TypeSelect({getTepmeratureType, value}){
+function TypeSelect({getTemperatureType, value}){
   return(
     <>
       <form>
         <label> Choose a type </label>
-        <select onChange={getTepmeratureType} value={value}>
+        <select onChange={getTemperatureType} value={value}>
           <option value='kelvin'>Kelvin</option>
           <option value='fahrenheit'>Fahrenheit</option>
           <option value='celsius'>Celsius</option>
@@ -17,7 +17,7 @@ function TypeSelect({getTepmeratureType, value}){
 }
 
 TypeSelect.propTypes = {
-  getTepmeratureType: PropTypes.func.isRequired,
+  getTemperatureType: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired
 };
 
