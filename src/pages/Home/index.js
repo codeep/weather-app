@@ -14,9 +14,9 @@ class Home extends Component {
       dragedRegion: '',
     };
     this.removeView = this.removeView.bind(this);
-    this.handleDragStart = this.handleDragStart.bind(this);
-    this.getDataRegion = this.getDataRegion.bind(this);
     this.handleDrop = this.handleDrop.bind(this);
+    this.getDataRegion = this.getDataRegion.bind(this);
+    this.handleDragStart = this.handleDragStart.bind(this);
   };
 
   componentDidMount() {
@@ -45,7 +45,6 @@ class Home extends Component {
         }));
       }
     } catch (e) {
-      console.log(e);
       alert('Please select a region');
     }
   };
