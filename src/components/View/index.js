@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './style.css';
 import PropTypes from 'prop-types';
 import TypeSelect from '../TypeSelect';
-import { setTemperature, setOpenWeatherIcon } from '../../utils';
+import { getFormatedTemperature, setOpenWeatherIcon } from '../../utils';
 
 class View extends Component {
   constructor(props) {
@@ -13,10 +13,10 @@ class View extends Component {
 
     this.handleDrop = this.handleDrop.bind(this);
     this.handleDragOver = this.handleDragOver.bind(this);
-    this.getTemperatureType = this.getTemperatureType.bind(this);
+    this.handleTemperatureTypeChange = this.handleTemperatureTypeChange.bind(this);
   };
 
-  getTemperatureType({ target: { value } }) {
+  handleTemperatureTypeChange({ target: { value } }) {
     this.setState({ value });
   };
 
@@ -52,14 +52,14 @@ class View extends Component {
         onDragOver={this.handleDragOver}
       >
         <button onClick={() => this.props.removeView(region)}> Close </button>
-        <TypeSelect getTemperatureType={this.getTemperatureType} value={value} />
+        <TypeSelect handleTemperatureTypeChange={this.handleTemperatureTypeChange} value={value} />
         <div className='view'>
           <div>
             {region}
             <br />
             Weather
             <br />
-            {setTemperature(temp, value)}
+            {getFormatedTemperature(temp, value)}
             <br />
             {description}
           </div>
@@ -68,12 +68,12 @@ class View extends Component {
             <div>
               {new Date().toLocaleString()}
               <br />
-              {setTemperature(temp_min, value)} / {setTemperature(temp_max, value)}
+              {getFormatedTemperature(temp_min, value)} / {getFormatedTemperature(temp_max, value)}
             </div>
           </div>
         </div>
         <div>
-          Feels Like- {setTemperature(feels_like, value)}
+          Feels Like- {getFormatedTemperature(feels_like, value)}
           <br />
           Humidity - {humidity}
         </div>

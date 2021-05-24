@@ -11,7 +11,7 @@ export const setOpenWeatherIcon = (icon) => (
   `${OpenWeatherIconURL}${icon}@2x.png`
 )
 
-export const setTemperature = (temp, value) => {
+export const getFormatedTemperature = (temp, value) => {
   if (value === 'celsius'){
     return Math.round(temp - 273.15)
   }else if (value === 'fahrenheit'){
